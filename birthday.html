@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Sinh Nhật 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #1a0533;
+    background-image:
+        radial-gradient(ellipse at 20% 20%, #3d0f6e 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, #1a0a4a 0%, transparent 50%);
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.app-container {
+    width: 375px;
+    height: 812px;
+    border-radius: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 8px #111;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    background: #0d0d1a;
+}
+
+.screen {
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+    transition: opacity 0.4s ease;
+}
+.hidden { opacity: 0; pointer-events: none; z-index: -1; }
+.active { opacity: 1; pointer-events: auto; z-index: 10; }
+
+/* ====== LOCK SCREEN ====== */
+#lock-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(160deg, #1a0533, #0d0d2e, #1a0533);
+    overflow: hidden;
+}
+
+/* Floating balloons background */
+.balloons-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.balloon {
+    position: absolute;
+    font-size: 2rem;
+    animation: floatUp linear infinite;
+    opacity: 0.5;
+}
+@keyframes floatUp {
+    0%   { transform: translateY(100%) rotate(-10deg); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(-120%) rotate(10deg); opacity: 0; }
+}
+
+.lock-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-img {
+    width: 310px;
+    height: 210px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 20px;
+    box-shadow: 0 0 0 3px #f9c74f, 0 0 30px rgba(249,199,79,0.4);
+    margin-bottom: 16px;
+}
+.profile-placeholder {
+    width: 310px;
+    height: 210px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #f9c74f, #f8961e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    box-shadow: 0 0 0 3px #f9c74f, 0 0 30px rgba(249,199,79,0.4);
+    margin-bottom: 16px;
+}
+
+.lock-cake {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    animation: cakeBounce 1.5s ease-in-out infinite;
+}
+@keyframes cakeBounce {
+    0%,100% { transform: translateY(0) rotate(-5deg); }
+    50%      { transform: translateY(-8px) rotate(5deg); }
+}
+
+.lock-title {
+    font-size: 0.78rem;
+    color: rgba(249,199,79,0.8);
+    margin-bottom: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.dots-indicator {
+    display: flex; gap: 12px; margin-bottom: 10px;
+}
+.dot {
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(249,199,79,0.4);
+    transition: all 0.2s;
+}
+.dot.filled {
+    background: #f9c74f;
+    border-color: #f9c74f;
+    box-shadow: 0 0 12px rgba(249,199,79,0.7);
+    transform: scale(1.15);
+}
+.dot.error {
+    background: #ff4444;
+    border-color: #ff4444;
+    animation: shake 0.4s ease;
+}
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    gap: 10px;
+    justify-content: center;
+}
+.num-btn {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(249,199,79,0.2);
+    font-size: 1.3rem; font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    backdrop-filter: blur(4px);
+}
+.num-btn:active {
+    background: rgba(249,199,79,0.3);
+    transform: scale(0.92);
+}
+.num-btn.clear { color: #f9c74f; font-size: 1.1rem; }
+
+/* ====== MAIN MENU ====== */
+#main-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    background: linear-gradient(160deg, #1a0533, #0d0d2e, #1a0533);
+    overflow: hidden;
+    position: relative;
+}
+
+.menu-fireworks {
+    position: absolute; inset: 0; pointer-events: none;
+}
+
+.menu-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.5rem;
+    text-align: center;
+    background: linear-gradient(135deg, #f9c74f, #f8961e, #f3722c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.4;
+    z-index: 2;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 10px;
+    z-index: 2;
+}
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.menu-item:active { transform: scale(0.92); }
+
+.icon-box {
+    width: 90px; height: 90px;
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(249,199,79,0.25);
+    border-radius: 22px;
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 10px;
+    font-size: 2.8rem;
+    box-shadow: 0 4px 20px rgba(249,199,79,0.1);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+}
+.menu-item:hover .icon-box {
+    border-color: rgba(249,199,79,0.6);
+    box-shadow: 0 4px 20px rgba(249,199,79,0.3);
+}
+.menu-item span {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+}
+
+/* ====== MODALS ====== */
+.modal {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    background: rgba(0,0,0,0.5);
+    transition: opacity 0.3s ease;
+    z-index: 100;
+}
+
+.glass-effect {
+    background: rgba(20,10,40,0.85);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(249,199,79,0.25);
+    border-radius: 28px;
+    width: 88%; max-height: 88%;
+    padding: 22px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,199,79,0.1) inset;
+    position: relative;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.glass-effect::-webkit-scrollbar { display: none; }
+
+.close-btn {
+    background: linear-gradient(135deg, #f9c74f, #f8961e);
+    color: #1a0533;
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; justify-content: center; align-items: center;
+    font-weight: 900;
+    line-height: 1;
+}
+.absolute-right { position: absolute; top: 14px; right: 14px; z-index: 10; }
+
+/* ====== MUSIC ====== */
+.modal-header {
+    display: flex; justify-content: center; align-items: center;
+    color: #f9c74f;
+    font-weight: 800; font-size: 0.85rem; letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    position: relative;
+}
+.modal-header .close-btn { position: absolute; right: 0; }
+
+.music-body {
+    display: flex; flex-direction: column; align-items: center; width: 100%;
+}
+
+.album-art {
+    width: 160px; height: 160px;
+    border-radius: 18px; position: relative;
+    background: linear-gradient(135deg, #f9c74f, #f8961e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    box-shadow: 0 12px 30px rgba(249,199,79,0.3);
+    margin-bottom: 14px;
+    overflow: hidden; flex-shrink: 0;
+    border: 2px solid rgba(249,199,79,0.3);
+}
+.album-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.album-art.playing {
+    box-shadow: 0 12px 40px rgba(249,199,79,0.5);
+    animation: albumPulse 2s ease-in-out infinite;
+}
+@keyframes albumPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+
+.song-title {
+    color: #f9c74f; font-size: 1.05rem; margin-bottom: 2px;
+    text-align: center; font-weight: 800;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    padding: 0 10px; max-width: 100%;
+}
+
+.progress-bar {
+    width: 100%; display: flex; align-items: center;
+    gap: 8px; margin: 10px 0 14px;
+}
+.progress-bar .time { font-size: 0.68rem; color: #f9c74f; min-width: 30px; font-weight: 600; }
+.slider {
+    flex: 1; -webkit-appearance: none;
+    height: 4px; background: rgba(249,199,79,0.2);
+    border-radius: 2px; cursor: pointer;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #f9c74f;
+    box-shadow: 0 0 8px rgba(249,199,79,0.6);
+}
+
+.controls { display: flex; gap: 28px; align-items: center; margin-bottom: 18px; }
+.ctrl-btn {
+    background: none; border: none; color: rgba(249,199,79,0.5);
+    font-size: 1.6rem; cursor: pointer; line-height: 1; transition: all 0.15s;
+}
+.ctrl-btn:active { transform: scale(0.88); color: #f9c74f; }
+.play-btn {
+    background: linear-gradient(135deg, #f9c74f, #f8961e);
+    color: #1a0533; border: none;
+    width: 58px; height: 58px; border-radius: 50%;
+    font-size: 1.5rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(249,199,79,0.4); line-height: 1;
+}
+.play-btn:active { transform: scale(0.92); }
+
+.playlist {
+    width: 100%; display: flex; flex-direction: column;
+    gap: 8px; max-height: 160px; overflow-y: auto; scrollbar-width: none;
+}
+.playlist::-webkit-scrollbar { display: none; }
+.playlist-item {
+    display: flex; align-items: center;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(249,199,79,0.1);
+    padding: 8px 10px; border-radius: 14px; gap: 12px;
+    cursor: pointer; transition: all 0.2s;
+}
+.playlist-item:hover { background: rgba(249,199,79,0.1); border-color: rgba(249,199,79,0.3); }
+.playlist-item.active-track {
+    background: rgba(249,199,79,0.12);
+    border-color: rgba(249,199,79,0.4);
+}
+.track-thumb {
+    width: 44px; height: 44px; border-radius: 10px; overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #f9c74f, #f8961e);
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+.track-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.track-info { flex: 1; min-width: 0; }
+.track-name { font-size: 0.82rem; color: #f9c74f; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track-sub { font-size: 0.68rem; color: rgba(249,199,79,0.6); margin-top: 2px; }
+.track-playing-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #f9c74f;
+    flex-shrink: 0; opacity: 0; animation: blinkDot 1s ease-in-out infinite;
+}
+.playlist-item.active-track .track-playing-dot { opacity: 1; }
+@keyframes blinkDot { 0%,100%{opacity:0.3} 50%{opacity:1} }
+.empty-playlist { text-align: center; padding: 16px; font-size: 0.78rem; color: #f9c74f; opacity: 0.5; }
+
+/* ====== LETTER ====== */
+.letter-body { padding-top: 18px; color: rgba(255,255,255,0.85); line-height: 1.75; }
+.letter-body h2 { font-size: 1.1rem; margin-bottom: 14px; color: #f9c74f; font-family: 'Pacifico', cursive; }
+.letter-body p { margin-bottom: 12px; font-size: 0.87rem; }
+
+/* ====== GALLERY ====== */
+.gallery-header {
+    text-align: center; color: #f9c74f; font-weight: 800;
+    margin-bottom: 12px; font-size: 0.9rem; letter-spacing: 2px;
+    font-family: 'Pacifico', cursive;
+}
+.gallery-scroll-wrap {
+    overflow: hidden; width: 100%; height: 460px;
+    position: relative; border-radius: 16px;
+}
+.gallery-track { display: flex; flex-direction: row; gap: 8px; width: 100%; height: 100%; }
+.gallery-col { display: flex; flex-direction: column; gap: 8px; flex: 1; will-change: transform; }
+.gallery-item {
+    width: 100%; aspect-ratio: 1/1;
+    border-radius: 16px; overflow: hidden; cursor: pointer;
+    position: relative; flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(249,199,79,0.15);
+    border: 1px solid rgba(249,199,79,0.15);
+}
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+
+.lightbox {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 200; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s; border-radius: 28px;
+}
+.lightbox.show { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 90%; max-height: 80%;
+    border-radius: 16px; object-fit: contain;
+    animation: zoomIn 0.3s ease;
+    box-shadow: 0 0 40px rgba(249,199,79,0.4);
+}
+@keyframes zoomIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+.lightbox-close {
+    position: absolute; top: 16px; right: 16px;
+    background: linear-gradient(135deg, #f9c74f, #f8961e);
+    color: #1a0533; border: none;
+    width: 36px; height: 36px; border-radius: 50%;
+    font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-weight: 900;
+}
+
+/* ====== GIFT / BIRTHDAY SCENE ====== */
+#gift-modal { background: rgba(0,0,0,0.7) !important; }
+
+.dark-close {
+    background: rgba(249,199,79,0.2);
+    position: absolute; top: 16px; right: 16px; z-index: 200;
+    border: 1px solid rgba(249,199,79,0.3);
+    width: 32px; height: 32px; border-radius: 50%;
+    color: #f9c74f; font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.gift-scene {
+    width: 100%; height: 100%;
+    position: relative;
+    background: linear-gradient(180deg, #0d0020 0%, #1a0030 50%, #0d0020 100%);
+    overflow: hidden;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.star-dot { position: absolute; background: white; border-radius: 50%; animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle { 0%,100%{opacity:0.1;transform:scale(0.8)} 50%{opacity:1;transform:scale(1)} }
+
+/* Countdown */
+.g-countdown {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 16px;
+    position: absolute; inset: 0; z-index: 10;
+}
+.g-count-num {
+    font-family: 'Pacifico', cursive;
+    font-size: 8rem;
+    background: linear-gradient(135deg, #f9c74f, #f8961e);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(249,199,79,0.6));
+    line-height: 1;
+}
+.g-count-text {
+    color: rgba(255,255,255,0.85); font-size: 1rem; font-weight: 600; text-align: center;
+}
+
+/* Close eyes */
+.g-close-eyes {
+    display: none; flex-direction: column; align-items: center;
+    justify-content: center; gap: 16px;
+    position: absolute; inset: 0; z-index: 10;
+}
+
+/* Party scene */
+.g-party {
+    display: none; position: absolute; inset: 0; z-index: 10; overflow: hidden;
+}
+
+.g-party-confetti { position: absolute; inset: 0; pointer-events: none; }
+.g-confetti-piece {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    animation: confettiFall linear infinite;
+}
+@keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(900px) rotate(720deg); opacity: 0.3; }
+}
+
+.g-party-content {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px; padding: 20px;
+}
+
+.g-party-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, #f9c74f, #f8961e, #f3722c);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-align: center;
+    filter: drop-shadow(0 0 10px rgba(249,199,79,0.4));
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: none;
+}
+.g-party-title.show { animation: slideDown 0.6s ease forwards; }
+@keyframes slideDown { to { opacity:1; transform:translateY(0); } }
+
+.g-balloons {
+    display: flex; gap: 8px; font-size: 2.5rem;
+    opacity: 0; transform: scale(0);
+}
+.g-balloons.show { animation: popIn 0.5s ease 0.3s forwards; }
+@keyframes popIn { to { opacity:1; transform:scale(1); } }
+
+.g-cake-wrap {
+    font-size: 5rem;
+    opacity: 0;
+    filter: drop-shadow(0 0 20px rgba(249,199,79,0.6));
+}
+.g-cake-wrap.show { animation: popIn 0.6s ease 0.6s forwards; }
+
+.g-wish-bubble {
+    background: rgba(249,199,79,0.12);
+    border: 1.5px solid rgba(249,199,79,0.4);
+    border-radius: 20px;
+    padding: 12px 20px;
+    color: #f9c74f; font-weight: 700; font-size: 0.9rem;
+    text-align: center; line-height: 1.5;
+    opacity: 0; transform: translateY(20px);
+    max-width: 280px;
+}
+.g-wish-bubble.show { animation: fadeUp 0.6s ease 1s forwards; }
+@keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+
+.g-party-footer {
+    font-size: 0.8rem; color: rgba(255,255,255,0.5);
+    opacity: 0;
+}
+.g-party-footer.show { animation: fadeUp 0.6s ease 1.5s forwards; }
+
+/* Chat bubbles (gift garden style) */
+.g-bubble {
+    position: absolute;
+    background: rgba(249,199,79,0.12);
+    border: 1.5px solid rgba(249,199,79,0.4);
+    color: #f9c74f; padding: 8px 14px;
+    border-radius: 20px; font-weight: 700; font-size: 0.78rem;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: 20; white-space: nowrap;
+}
+.g-bubble.show { opacity: 1; transform: translateY(0); }
+
+.g-photo {
+    position: absolute;
+    width: 72px; height: 72px;
+    background: white; border-radius: 8px; padding: 4px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    opacity: 0; transition: opacity 0.6s ease;
+    z-index: 20; overflow: hidden;
+}
+.g-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; }
+.g-photo.show { opacity: 1; }
+
+@keyframes confettiRain {
+    from { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    to   { transform: translateY(100vh) rotate(540deg); opacity: 0; }
+}
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- ===== LOCK SCREEN ===== -->
+    <section id="lock-screen" class="screen active">
+        <div class="balloons-bg" id="balloons-bg"></div>
+        <div class="lock-wrapper">
+            <img src="images/profile.jpg" alt="Profile" class="profile-img"
+                 onerror="this.outerHTML='<div class=\'profile-placeholder\'>🎂</div>'">
+            <div class="lock-cake">🎂</div>
+            <div class="lock-title">NHẬP MÃ ĐỂ MỞ QUÀ SINH NHẬT 🎁</div>
+            <div class="dots-indicator">
+                <span class="dot"></span><span class="dot"></span>
+                <span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="numpad">
+                <button class="num-btn" data-val="1">1</button>
+                <button class="num-btn" data-val="2">2</button>
+                <button class="num-btn" data-val="3">3</button>
+                <button class="num-btn" data-val="4">4</button>
+                <button class="num-btn" data-val="5">5</button>
+                <button class="num-btn" data-val="6">6</button>
+                <button class="num-btn" data-val="7">7</button>
+                <button class="num-btn" data-val="8">8</button>
+                <button class="num-btn" data-val="9">9</button>
+                <button class="num-btn" style="visibility:hidden;"></button>
+                <button class="num-btn" data-val="0">0</button>
+                <button class="num-btn clear" data-val="clear">⌫</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MAIN MENU ===== -->
+    <section id="main-menu" class="screen hidden">
+        <canvas class="menu-fireworks" id="fw-canvas"></canvas>
+        <div class="menu-title">🎉 Happy Birthday<br>mấy ní! 🎂</div>
+        <div class="menu-grid">
+            <div class="menu-item" onclick="openModal('music-modal')">
+                <div class="icon-box">🎵</div>
+                <span>Nhạc</span>
+            </div>
+            <div class="menu-item" onclick="openModal('letter-modal')">
+                <div class="icon-box">💌</div>
+                <span>Thư</span>
+            </div>
+            <div class="menu-item" onclick="openModal('gallery-modal')">
+                <div class="icon-box">📸</div>
+                <span>Ảnh</span>
+            </div>
+            <div class="menu-item" onclick="openModal('gift-modal')">
+                <div class="icon-box">🎁</div>
+                <span>Quà</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MUSIC MODAL ===== -->
+    <div id="music-modal" class="modal hidden">
+        <div class="modal-content glass-effect">
+            <div class="modal-header">
+                <span>🎵 MUSIC PLAYER</span>
+                <button class="close-btn" onclick="closeModal('music-modal')">✕</button>
+            </div>
+            <div class="music-body">
+                <div class="album-art" id="album-art">
+                    <img src="music/cover.jpg" alt="cover" onerror="this.style.display='none'">
+                    <span id="album-emoji" style="position:absolute;">🎶</span>
+                </div>
+                <div class="song-title" id="song-title">Chưa có bài nào</div>
+                <div class="progress-bar">
+                    <span class="time" id="time-current">0:00</span>
+                    <input type="range" min="0" max="100" value="0" class="slider" id="seek-slider">
+                    <span class="time" id="time-total">0:00</span>
+                </div>
+                <div class="controls">
+                    <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
+                    <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+                    <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
+                </div>
+                <div class="playlist" id="playlist">
+                    <div class="empty-playlist">Đang tải nhạc... 🎵</div>
+                </div>
+            </div>
+            <audio id="bg-music"></audio>
+        </div>
+    </div>
+
+    <!-- ===== LETTER MODAL ===== -->
+    <div id="letter-modal" class="modal hidden">
+        <div class="modal-content glass-effect">
+            <button class="close-btn absolute-right" onclick="closeModal('letter-modal')">✕</button>
+            <div class="letter-body">
+                <h2>Nhân dịp sinh nhật Sếp, tụi em xin gửi đến Sếp những lời chúc mừng tốt đẹp nhất!</h2>
+                <p>Chúc Sếp bước sang tuổi mới dồi dào sức khỏe, luôn giữ vững phong độ, sự nhiệt huyết và tầm nhìn chiến lược sắc bén để tiếp tục dẫn dắt Quapp gặt hái thêm nhiều thành công rực rỡ.</p>
+                <p>Chúc Sếp có một ngày sinh nhật thật trọn vẹn và ý nghĩa bên gia đình, bạn bè và những người thân yêu!</p>
+                <p style="margin-top:20px;font-weight:700;font-size:1rem;"> <br>— Quapp team</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GALLERY MODAL ===== -->
+    <div id="gallery-modal" class="modal hidden">
+        <div class="modal-content glass-effect" style="padding:16px;">
+            <button class="close-btn absolute-right" onclick="closeModal('gallery-modal')">✕</button>
+            <div class="gallery-header">📸 HAPPY BIRTHDAY 🎉</div>
+            <div class="gallery-scroll-wrap">
+                <div class="gallery-track">
+                    <div class="gallery-col" id="col-left"></div>
+                    <div class="gallery-col" id="col-right"></div>
+                </div>
+            </div>
+            <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+                <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+                <img id="lightbox-img" src="" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GIFT MODAL ===== -->
+    <div id="gift-modal" class="modal hidden">
+        <button class="dark-close" onclick="closeModal('gift-modal')">✕</button>
+        <div class="gift-scene">
+            <div class="stars" id="stars"></div>
+
+            <!-- Bước 1: Đếm ngược -->
+            <div class="g-countdown" id="gift-step1">
+                <div class="g-count-num" id="gift-countdown">3</div>
+                <div class="g-count-text">Chuẩn bị nhé... 🎉<br><span style="font-size:0.8rem;opacity:0.7;">🎉🎉🎉</span></div>
+            </div>
+
+            <!-- Bước 2: Nhắm mắt -->
+            <div class="g-close-eyes" id="gift-step2">
+                <div style="font-size:5rem;">😌</div>
+                <div style="font-size:1.3rem; font-weight:800; color:#f9c74f; text-align:center;">
+                    😌😌😌
+                </div>
+            </div>
+
+            <!-- Bước 3: Party scene -->
+            <div class="g-party" id="gift-step3">
+                <div class="g-party-confetti" id="party-confetti"></div>
+
+                <!-- Floating bubbles + photos -->
+                <div class="g-bubble" id="gb1" style="top:8%; left:5%;">Happy Birthday! 🎂</div>
+                <div class="g-bubble" id="gb2" style="top:20%; right:5%;">Chúc mừng sinh nhật 🎉</div>
+                <div class="g-bubble" id="gb3" style="top:36%; left:8%;">😄😄😄 </div>
+                <div class="g-bubble" id="gb4" style="top:50%; right:6%;">🥳🥳🥳</div>
+
+                <div class="g-photo" id="gp1" style="top:5%; right:6%; transform:rotate(10deg);">
+                    <img src="images/photo1.jpg" onerror="this.style.display='none'">
+                </div>
+                <div class="g-photo" id="gp2" style="top:18%; left:4%; transform:rotate(-12deg);">
+                    <img src="images/photo2.jpg" onerror="this.style.display='none'">
+                </div>
+                <div class="g-photo" id="gp3" style="top:42%; right:3%; transform:rotate(8deg);">
+                    <img src="images/photo3.jpg" onerror="this.style.display='none'">
+                </div>
+                <div class="g-photo" id="gp4" style="top:56%; left:3%; transform:rotate(-10deg);">
+                    <img src="images/photo4.jpg" onerror="this.style.display='none'">
+                </div>
+
+                <!-- Center content -->
+                <div class="g-party-content">
+                    <div style="height:220px;"></div><!-- spacer for bubbles -->
+                    <div class="g-balloons" id="g-balloons">🎈🎈🎈</div>
+                    <div class="g-cake-wrap" id="g-cake">🎂</div>
+                    <div class="g-wish-bubble" id="g-wish">
+                        Chúc sếp sinh nhật vui vẻ,<br>
+                        mãi trẻ đẹp và hạnh phúc! 🌟
+                    </div>
+                    <div class="g-party-footer" id="g-footer">— From Citynow 💛</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+// Fix NFD Vietnamese
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('*').forEach(el => {
+        el.childNodes.forEach(node => {
+            if (node.nodeType === 3) node.textContent = node.textContent.normalize('NFC');
+        });
+    });
+});
+
+// ============ BALLOONS BACKGROUND ============
+(function() {
+    const bg = document.getElementById('balloons-bg');
+    const emojis = ['🎈','🎉','🎊','✨','⭐','🌟'];
+    for (let i = 0; i < 12; i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        b.style.cssText = `
+            left: ${Math.random()*100}%;
+            animation-duration: ${6 + Math.random()*8}s;
+            animation-delay: ${Math.random()*6}s;
+            font-size: ${1.2 + Math.random()*1.5}rem;
+        `;
+        bg.appendChild(b);
+    }
+})();
+
+// ============ PASSCODE ============
+const CORRECT_PASS = "2803";
+let currentPass = "";
+const dots = document.querySelectorAll('.dot');
+const lockScreen = document.getElementById('lock-screen');
+const mainMenu   = document.getElementById('main-menu');
+
+document.querySelectorAll('.num-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const val = btn.getAttribute('data-val');
+        if (!val) return;
+        if (val === "clear") currentPass = currentPass.slice(0,-1);
+        else if (currentPass.length < 4) currentPass += val;
+        updateDots(); checkPasscode();
+    });
+});
+
+function updateDots() {
+    dots.forEach((d,i) => { d.classList.toggle('filled', i < currentPass.length); d.classList.remove('error'); });
+}
+
+function checkPasscode() {
+    if (currentPass.length < 4) return;
+    if (currentPass === CORRECT_PASS) {
+        for (let i = 0; i < 60; i++) spawnConfetti();
+        setTimeout(() => {
+            lockScreen.classList.replace('active','hidden');
+            mainMenu.classList.replace('hidden','active');
+            startFireworks();
+        }, 400);
+    } else {
+        dots.forEach(d => d.classList.add('error'));
+        setTimeout(() => { currentPass = ""; updateDots(); }, 500);
+    }
+}
+
+function spawnConfetti() {
+    const c = document.createElement('div');
+    const colors = ['#f9c74f','#f8961e','#f3722c','#90e0ef','#b5ead7','#ff9ef5'];
+    c.style.cssText = `position:fixed;width:8px;height:8px;border-radius:2px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        left:${10+Math.random()*80}%;top:0;z-index:9999;pointer-events:none;
+        animation:confettiRain ${1.2+Math.random()}s ease-in ${Math.random()*0.4}s both;`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2500);
+}
+
+// ============ FIREWORKS (menu bg) ============
+function startFireworks() {
+    const canvas = document.getElementById('fw-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 375; canvas.height = 812;
+    const particles = [];
+
+    function shoot() {
+        const x = 50 + Math.random()*275, y = 50 + Math.random()*300;
+        const colors = ['#f9c74f','#f8961e','#ff9ef5','#90e0ef','#b5ead7','#fff'];
+        for (let i = 0; i < 30; i++) {
+            const angle = (Math.PI * 2 / 30) * i;
+            const speed = 2 + Math.random() * 3;
+            particles.push({
+                x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed,
+                color: colors[Math.floor(Math.random()*colors.length)],
+                life: 1, decay: 0.015 + Math.random()*0.01
+            });
+        }
+    }
+
+    let shotCount = 0;
+    const shootInterval = setInterval(() => {
+        shoot(); shotCount++;
+        if (shotCount > 6) clearInterval(shootInterval);
+    }, 400);
+
+    function draw() {
+        ctx.clearRect(0,0,375,812);
+        for (let i = particles.length-1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx; p.y += p.vy; p.vy += 0.08; p.life -= p.decay;
+            ctx.globalAlpha = p.life;
+            ctx.fillStyle = p.color;
+            ctx.beginPath(); ctx.arc(p.x, p.y, 2.5, 0, Math.PI*2); ctx.fill();
+            if (p.life <= 0) particles.splice(i, 1);
+        }
+        if (particles.length > 0) requestAnimationFrame(draw);
+        else ctx.clearRect(0,0,375,812);
+    }
+    draw();
+}
+
+// ============ MODALS ============
+function openModal(id) {
+    document.getElementById(id).classList.replace('hidden','active');
+    if (id === 'gift-modal') runGiftAnimation();
+    if (id === 'gallery-modal') startGalleryScroll();
+}
+function closeModal(id) {
+    document.getElementById(id).classList.replace('active','hidden');
+}
+
+// ============ MUSIC ============
+const PLAYLIST = [
+    { name: "Happy Birthday",        file: "music/1.mp3",    cover: "music/cover1.jpg" },
+    { name: "Happy Birthday",          file: "music/2.mp3",      cover: "music/cover2.jpg" },
+    { name: "Happy Birthday",     file: "music/3.mp3", cover: "music/cover3.jpg" },
+    { name: "Happy Birthday",        file: "music/4.mp3",                 cover: "music/cover4.jpg" },
+];
+let songs = PLAYLIST.map(p=>({...p})), currentIdx=-1, isPlaying=false;
+const audioEl = document.getElementById("bg-music");
+const albumArtEl = document.getElementById("album-art");
+
+audioEl.addEventListener("timeupdate", () => {
+    if (!audioEl.duration) return;
+    document.getElementById("seek-slider").value = audioEl.currentTime/audioEl.duration*100;
+    document.getElementById("time-current").textContent = fmt(audioEl.currentTime);
+    document.getElementById("time-total").textContent   = fmt(audioEl.duration);
+});
+audioEl.addEventListener("ended", nextTrack);
+audioEl.addEventListener("error", () => { document.getElementById("song-title").textContent="❌ Không tìm thấy file"; stopState(); });
+document.getElementById("seek-slider").addEventListener("input", e => { if(audioEl.duration) audioEl.currentTime=e.target.value/100*audioEl.duration; });
+
+function fmt(s) { if(!s||isNaN(s))return"0:00"; return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0"); }
+
+function renderPlaylist() {
+    const pl = document.getElementById("playlist");
+    if(!songs.length){pl.innerHTML='<div class="empty-playlist">Không có bài hát 🎵</div>';return;}
+    pl.innerHTML = songs.map((s,i)=>{
+        const active = i===currentIdx;
+        return `<div class="playlist-item ${active?"active-track":""}" onclick="playSong(${i})">
+            <div class="track-thumb"><img src="${s.cover}" onerror="this.style.display='none'"></div>
+            <div class="track-info">
+                <div class="track-name">${s.name}</div>
+                <div class="track-sub">${active&&isPlaying?"▶ Đang phát":"🎵 MP3"}</div>
+            </div>
+            <div class="track-playing-dot"></div>
+        </div>`;
+    }).join("");
+}
+
+function updateAlbumArt(song) {
+    const img=albumArtEl.querySelector("img"), emoji=document.getElementById("album-emoji");
+    if(img){img.style.display="block"; img.src=song.cover; img.onerror=function(){this.style.display="none";};}
+    if(emoji) emoji.style.display="none";
+}
+
+function playSong(idx) {
+    if(idx<0||idx>=songs.length)return;
+    currentIdx=idx; const s=songs[idx]; audioEl.src=s.file;
+    audioEl.play().then(()=>{
+        isPlaying=true;
+        document.getElementById("play-btn").textContent="⏸";
+        document.getElementById("song-title").textContent=s.name;
+        albumArtEl.classList.add("playing"); updateAlbumArt(s); renderPlaylist();
+    }).catch(()=>{ document.getElementById("song-title").textContent="❌ "+s.name; stopState(); });
+}
+
+function togglePlay() {
+    if(!songs.length)return;
+    if(currentIdx===-1){playSong(0);return;}
+    if(isPlaying){audioEl.pause();stopState();}
+    else{audioEl.play().then(()=>{isPlaying=true;document.getElementById("play-btn").textContent="⏸";albumArtEl.classList.add("playing");renderPlaylist();});}
+}
+function stopState(){isPlaying=false;document.getElementById("play-btn").textContent="▶";albumArtEl.classList.remove("playing");renderPlaylist();}
+function nextTrack(){playSong((currentIdx+1)%songs.length);}
+function prevTrack(){if(audioEl.currentTime>3){audioEl.currentTime=0;return;}playSong((currentIdx-1+songs.length)%songs.length);}
+renderPlaylist();
+
+// ============ STARS ============
+(function(){
+    const c=document.getElementById('stars');
+    for(let i=0;i<70;i++){
+        const s=document.createElement('div'), sz=1+Math.random()*2.5;
+        s.className='star-dot';
+        s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s`;
+        c.appendChild(s);
+    }
+})();
+
+// ============ GIFT ANIMATION ============
+function runGiftAnimation() {
+    const s1=document.getElementById('gift-step1');
+    const s2=document.getElementById('gift-step2');
+    const s3=document.getElementById('gift-step3');
+    const countEl=document.getElementById('gift-countdown');
+
+    s1.style.display='flex'; s2.style.display='none'; s3.style.display='none';
+    countEl.textContent='3';
+    document.querySelectorAll('.g-bubble,.g-photo').forEach(el=>el.classList.remove('show'));
+    ['g-balloons','g-cake','g-wish','g-footer','g-party-title'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.classList.remove('show');
+    });
+
+    let count=3;
+    const timer=setInterval(()=>{
+        count--;
+        if(count>0){
+            countEl.textContent=String(count);
+        } else {
+            clearInterval(timer);
+            s1.style.display='none'; s2.style.display='flex';
+            setTimeout(()=>{
+                s2.style.display='none'; s3.style.display='block';
+                spawnPartyConfetti();
+                // Hiện dần
+                const items=['gb1','gp1','gb2','gp2','gb3','gp3','gb4','gp4'];
+                items.forEach((id,i)=>setTimeout(()=>{
+                    const el=document.getElementById(id); if(el) el.classList.add('show');
+                }, i*350));
+                setTimeout(()=>{ const el=document.getElementById('g-balloons'); if(el)el.classList.add('show'); }, 400);
+                setTimeout(()=>{ const el=document.getElementById('g-cake'); if(el)el.classList.add('show'); }, 700);
+                setTimeout(()=>{ const el=document.getElementById('g-wish'); if(el)el.classList.add('show'); }, 1000);
+                setTimeout(()=>{ const el=document.getElementById('g-footer'); if(el)el.classList.add('show'); }, 1500);
+            }, 2000);
+        }
+    }, 1500);
+}
+
+function spawnPartyConfetti() {
+    const container=document.getElementById('party-confetti');
+    container.innerHTML='';
+    const colors=['#f9c74f','#f8961e','#f3722c','#90e0ef','#b5ead7','#ff9ef5','#fff'];
+    for(let i=0;i<40;i++){
+        const p=document.createElement('div');
+        p.className='g-confetti-piece';
+        p.style.cssText=`
+            left:${Math.random()*100}%;
+            background:${colors[Math.floor(Math.random()*colors.length)]};
+            animation-duration:${2+Math.random()*3}s;
+            animation-delay:${Math.random()*2}s;
+            width:${6+Math.random()*6}px;
+            height:${6+Math.random()*6}px;
+            border-radius:${Math.random()>0.5?'50%':'2px'};
+        `;
+        container.appendChild(p);
+    }
+}
+
+// ============ GALLERY ============
+const GRADIENTS=['linear-gradient(135deg,#f9c74f,#f8961e)','linear-gradient(135deg,#f8961e,#f3722c)','linear-gradient(135deg,#90e0ef,#0096c7)','linear-gradient(135deg,#b5ead7,#43aa8b)','linear-gradient(135deg,#ff9ef5,#c77dff)','linear-gradient(135deg,#f9c74f,#90e0ef)','linear-gradient(135deg,#f3722c,#ff9ef5)','linear-gradient(135deg,#b5ead7,#f9c74f)','linear-gradient(135deg,#c77dff,#f8961e)','linear-gradient(135deg,#0096c7,#b5ead7)'];
+
+const PHOTOS=[
+    {src:"images/photo1.jpg"},{src:"images/photo2.jpg"},{src:"images/photo3.jpg"},
+    {src:"images/photo4.jpg"},{src:"images/photo5.jpg"},{src:"images/photo6.jpg"},
+    {src:"images/photo7.jpg"},{src:"images/photo8.jpg"},{src:"images/photo9.jpg"},{src:"images/photo10.jpg"},
+];
+
+let galleryStarted=false;
+function buildGallery(){
+    const colLeft=document.getElementById('col-left'), colRight=document.getElementById('col-right');
+    if(!colLeft||!colRight)return;
+    colLeft.innerHTML=''; colRight.innerHTML='';
+    const leftPhotos=PHOTOS.filter((_,i)=>i%2===0), rightPhotos=PHOTOS.filter((_,i)=>i%2===1);
+    function makeItem(src,gradient){
+        const div=document.createElement('div'); div.className='gallery-item'; div.style.background=gradient;
+        const img=document.createElement('img'); img.src=src; img.alt='photo';
+        img.onerror=function(){this.style.display='none';};
+        div.appendChild(img); div.addEventListener('click',()=>openLightbox(src,gradient)); return div;
+    }
+    function fillCol(col,photos,startIdx){
+        for(let r=0;r<4;r++) photos.forEach((p,i)=>col.appendChild(makeItem(p.src,GRADIENTS[(startIdx+i)%GRADIENTS.length])));
+    }
+    fillCol(colLeft,leftPhotos,0); fillCol(colRight,rightPhotos,1);
+}
+
+function startGalleryScroll(){
+    if(galleryStarted)return; galleryStarted=true; buildGallery();
+    const colLeft=document.getElementById('col-left'), colRight=document.getElementById('col-right');
+    const SPEED=0.6; let posLeft=0, posRight=0, pauseLeft=false, pauseRight=false;
+    const isTouch=navigator.maxTouchPoints>0;
+    if(!isTouch){
+        colLeft.addEventListener('mouseenter',()=>pauseLeft=true); colLeft.addEventListener('mouseleave',()=>pauseLeft=false);
+        colRight.addEventListener('mouseenter',()=>pauseRight=true); colRight.addEventListener('mouseleave',()=>pauseRight=false);
+    }
+    posRight=colRight.scrollHeight/4;
+    function loop(){
+        if(!pauseLeft){posLeft+=SPEED; const h=colLeft.scrollHeight/2; if(posLeft>=h)posLeft-=h; colLeft.style.transform=`translateY(-${posLeft}px)`;}
+        if(!pauseRight){posRight+=SPEED; const h=colRight.scrollHeight/2; if(posRight>=h)posRight-=h; colRight.style.transform=`translateY(-${posRight}px)`;}
+        requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+}
+
+function openLightbox(src,gradient){
+    const lb=document.getElementById('lightbox'), img=document.getElementById('lightbox-img');
+    lb.style.background='rgba(0,0,0,0.95)'; img.style.display='block'; img.style.background=gradient; img.src=src;
+    img.onerror=function(){this.style.display='none'; lb.style.background=gradient;};
+    lb.classList.add('show');
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('show'); }
+</script>
+</body>
+</html>
